@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Faktorial
@@ -10,35 +11,14 @@ namespace Faktorial
     {
         static void Main(string[] args)
         {
-            
 
-            string multi1 = "8633";
-            string multi2 = "524";
-
-            int countM2 = multi2.Length;
-
-            string rez = "0";
-            string[] pos = new string[countM2];
-            
-            //Console.WriteLine(to_pos("8633",'4'));
-
-
-            for (int i = countM2 - 1; i >= 0; i--)
-            {
-                pos[countM2 - i - 1] = to_pos(multi1, multi2[i]);
-                //Console.WriteLine($"{multi1} * {multi2[i]} = {pos[countM2 - i - 1]} [{countM2 - i - 1}]");
-            }
-            for (int i = 0; i < countM2; i++)
-            {
-                pos[i] += zero(i);
-                //Console.WriteLine($"[{i}] {pos[i]}");
-            }
-            //Console.WriteLine(adding("588","84245"));
-            for (int i = 0; i < pos.Length; i++)
-            {
-                rez = adding(rez, pos[i]);
-            }
-            Console.WriteLine(rez);
+            ParameterizedThreadStart threadstart = new ParameterizedThreadStart(factorial);
+            //int factend;
+            //factend = Convert.ToInt32(Console.ReadLine());
+            Thread thread = new Thread(threadstart);
+           
+            thread.Start((object)200);
+            //Console.WriteLine(factorial(factend));
             Console.ReadKey();
         }
 
@@ -140,6 +120,50 @@ namespace Faktorial
                 }
             }
             return rez;
+        }
+
+        private static string Multiplix( string a, string b)
+        {
+            string multi1 = a;
+            string multi2 = b;
+
+            int countM2 = multi2.Length;
+
+            string rez = "0";
+            string[] pos = new string[countM2];
+
+            //Console.WriteLine(to_pos("8633",'4'));
+
+
+            for (int i = countM2 - 1; i >= 0; i--)
+            {
+                pos[countM2 - i - 1] = to_pos(multi1, multi2[i]);
+                //Console.WriteLine($"{multi1} * {multi2[i]} = {pos[countM2 - i - 1]} [{countM2 - i - 1}]");
+            }
+            for (int i = 0; i < countM2; i++)
+            {
+                pos[i] += zero(i);
+                //Console.WriteLine($"[{i}] {pos[i]}");
+            }
+            //Console.WriteLine(adding("588","84245"));
+            for (int i = 0; i < pos.Length; i++)
+            {
+                rez = adding(rez, pos[i]);
+            }
+            //Console.WriteLine(rez);
+            //Console.ReadKey();
+            return rez;
+        }
+
+        static void factorial(object a)
+        {
+            string rez = "1";
+            for (int i = 1; i < (int)a; i++)
+            {
+                rez = Multiplix(rez, i.ToString());
+            }
+            //return rez;
+            Console.WriteLine(rez);
         }
     }
 }
