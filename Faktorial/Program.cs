@@ -9,16 +9,29 @@ namespace Faktorial
 {
     class Program
     {
+        public static List<string> Rezult = new List<string>();
         static void Main(string[] args)
         {
-
+            
             ParameterizedThreadStart threadstart = new ParameterizedThreadStart(factorial);
             //int factend;
             //factend = Convert.ToInt32(Console.ReadLine());
             Thread thread = new Thread(threadstart);
-           
             thread.Start((object)200);
+            threadstart = new ParameterizedThreadStart(SimpleNumber);
+            Thread thread1 = new Thread(threadstart);
+            thread1.Start(50);
+            threadstart = new ParameterizedThreadStart(fibonach);
+            Thread thread2 = new Thread(threadstart);
+            thread2.Start(50);
             //Console.WriteLine(factorial(factend));
+            //SimpleNumber(50);
+            //fibonach(50);
+            Console.ReadKey();
+            foreach (var item in Rezult)
+            {
+                Console.WriteLine(item);
+            }
             Console.ReadKey();
         }
 
@@ -163,7 +176,48 @@ namespace Faktorial
                 rez = Multiplix(rez, i.ToString());
             }
             //return rez;
-            Console.WriteLine(rez);
+            //Console.WriteLine(rez);
+            Rezult.Add(rez);
+        }
+
+        static void SimpleNumber(object max)
+        {
+            
+            //int tmp = 0;
+            for (int i = 1; i < (int)max; i++)
+            {
+                int tmpI = 0;
+                for (int j = 2; j < i; j++)
+                {
+                    if (i % j == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        tmpI++;
+
+                    }
+                }
+                if (tmpI == i - 2 || i == 1) 
+                {
+                    //Console.WriteLine("S = "+i);
+                    Rezult.Add("S = " + i);
+                }
+            }
+        }
+        static void fibonach(object max)
+        {
+            int i = 1;
+            int tmp = 1;
+            while (i < (int)max) 
+            {
+                int t = i;
+                i = tmp + i;
+                tmp = t;
+                //Console.WriteLine("F = "+i);
+                Rezult.Add("F = " + i);
+            }
         }
     }
 }
